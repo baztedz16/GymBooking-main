@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+            <ImageView
+                android:src="@drawable/ic_baseline_account_circle_24"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:id="@+id/user_list_item_image"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:paddingHorizontal="4dp">
+
+
+            <TextView
+                android:id="@+id/coach_item_fullname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coach Name"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+            <TextView
+                android:id="@+id/coach_item_activated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ACCOUNT STATUS"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="1.2dp"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+</LinearLayout>

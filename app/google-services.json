@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1077343043932",
+    "firebase_url": "https://gymbooking-7a2a8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "gymbooking-7a2a8",
+    "storage_bucket": "gymbooking-7a2a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077343043932:android:da8c9c34c50669a05f4199",
+        "android_client_info": {
+          "package_name": "com.domzky.gymbooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077343043932-6hun2bpreda53hu6le3khc47r5ia9ucf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLsk1swndxqQB9g2njNOi9-yYRc_CXYW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077343043932-6hun2bpreda53hu6le3khc47r5ia9ucf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

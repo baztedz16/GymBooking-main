@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Sessions.UsersActivity">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="314dp"
+        android:layout_height="112dp"
+        android:gravity="center"
+        android:text="Click a user to login."
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.137" />
+
+    <Button
+        android:id="@+id/btn_admin_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="administrator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.342" />
+
+    <Button
+        android:id="@+id/btn_owner_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gym owner"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_admin_login"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <Button
+        android:id="@+id/btn_staff_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gym staff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_coach_login"
+        app:layout_constraintVertical_bias="0.079" />
+
+    <Button
+        android:id="@+id/btn_coach_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gym coach"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_owner_login"
+        app:layout_constraintVertical_bias="0.09" />
+
+    <Button
+        android:id="@+id/btn_member_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gym member"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_staff_login"
+        app:layout_constraintVertical_bias="0.162" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
