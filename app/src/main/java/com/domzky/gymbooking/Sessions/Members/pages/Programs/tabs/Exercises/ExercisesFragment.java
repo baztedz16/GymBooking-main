@@ -41,7 +41,7 @@ public class ExercisesFragment extends Fragment {
         fab = view.findViewById(R.id.member_programs_exercises_add_fab);
         list = new ArrayList<>();
 
-        fab.setVisibility(View.GONE);
+        //fab.setVisibility(View.GONE);
 
 
         db.addValueEventListener(new ValueEventListener() {

@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextMealName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Meal Name"/>
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"/>
+
+    <EditText
+        android:id="@+id/editTextCalories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Calories"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/buttonPickDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick Date"/>
+
+    <Button
+        android:id="@+id/buttonPickTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick Time"/>
+
+    <Spinner
+        android:id="@+id/spinnerMealTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Meal Time"
+        android:entries="@array/meal_time_options"/>
+
+</LinearLayout>

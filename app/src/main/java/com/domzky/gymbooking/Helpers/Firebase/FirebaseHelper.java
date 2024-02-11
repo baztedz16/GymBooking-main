@@ -52,7 +52,12 @@ public class FirebaseHelper {
     public DatabaseReference getMemberSessionExcercise () {
         return ref.child("MemberSessionExercise");
     }
-
+    public DatabaseReference getBMIRecords () {
+        return ref.child("BMIRecords");
+    }
+    public DatabaseReference getDiet () {
+        return ref.child("Diet");
+    }
     public DatabaseReference getBmiReference() {
         return ref.child("BMI");
     }

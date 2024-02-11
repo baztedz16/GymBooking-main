@@ -62,7 +62,7 @@ public class DietFragment extends Fragment {
                                 snap.child("description").getValue(String.class),
                                 snap.child("portions").getValue(String.class),
                                 snap.child("intakeTime").getValue(String.class),
-                                snap.child("member_id").getValue(Boolean.class)
+                                snap.child("member_id").getValue(String.class)
                         ));
                     }
                 }

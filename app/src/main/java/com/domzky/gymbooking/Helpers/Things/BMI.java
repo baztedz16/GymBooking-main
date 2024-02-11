@@ -3,14 +3,14 @@ package com.domzky.gymbooking.Helpers.Things;
 import com.domzky.gymbooking.Helpers.Users.GymCoach;
 
 public class BMI {
-    public String datetime,member_id,coach_id,description,bmi_id;
+    public String datetime,member_id,coach_id,description,bmi_id,bmi;
     public Boolean deleted,heightEnglish,weightEnglish;
     public Double height,weight,totalBMI;
     public GymCoach coach;
 
     public BMI(){}
 
-    public BMI(String member_id,String coach_id,String datetime,String description,Double height,Double weight,Boolean deleted) {
+    public BMI(String member_id,String coach_id,String datetime,String description,Double height,Double weight,Boolean deleted,String bmi) {
         this.member_id = member_id;
         this.coach_id = coach_id;
         this.datetime = datetime;
@@ -18,6 +18,7 @@ public class BMI {
         this.height = height;
         this.weight = weight;
         this.deleted = deleted;
+        this.bmi =bmi;
     }
 
     public BMI(String bmi_id,String member_id,GymCoach coach,String datetime,String description,Double height,Double weight,Boolean heightEnglish,Boolean weightEnglish,Boolean deleted) {

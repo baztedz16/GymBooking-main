@@ -51,10 +51,10 @@ public class DietAdapter extends RecyclerView.Adapter<DietAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Diet diet = list.get(position);
 
-        holder.item_name.setText(diet.foodname);
-        holder.item_portions.setText(diet.portions);
-        holder.item_intake.setText(diet.intakeTime);
-        holder.item_description.setText(diet.description);
+        holder.item_name.setText(diet.meal_name);
+        holder.item_portions.setText(diet.description);
+        holder.item_intake.setText(diet.date+" : "+diet.time);
+       // holder.item_description.setText(diet.description);
         
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override

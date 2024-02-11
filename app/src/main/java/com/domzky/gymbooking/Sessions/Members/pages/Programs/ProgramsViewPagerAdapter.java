@@ -15,7 +15,6 @@ public class ProgramsViewPagerAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
     }
 
-    @NonNull
     @NotNull
     @Override
     public Fragment createFragment(int position) {
@@ -23,8 +22,6 @@ public class ProgramsViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new BMIFragment();
             case 1:
-                return new ExercisesFragment();
-            case 2:
                 return new DietFragment();
             default:
                 return new BMIFragment();
@@ -33,6 +30,6 @@ public class ProgramsViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

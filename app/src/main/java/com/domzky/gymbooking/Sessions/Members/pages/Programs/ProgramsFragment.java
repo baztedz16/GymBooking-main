@@ -20,7 +20,6 @@ public class ProgramsFragment extends Fragment {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -40,6 +40,7 @@ public class BMIAdapter extends RecyclerView.Adapter<BMIAdapter.ViewHolder> {
 
             deleteBtn.setVisibility(View.GONE);
             editBtn.setVisibility(View.GONE);
+            coach.setVisibility(View.GONE);
         }
 
     }
@@ -58,19 +59,19 @@ public class BMIAdapter extends RecyclerView.Adapter<BMIAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         BMI bmi = list.get(position);
 
-        holder.bmi.setText(bmi.getTotalBMI().toString() + " BMI");
+        holder.bmi.setText(bmi.bmi + " BMI");
         holder.date.setText("Checked at "+bmi.datetime);
-        holder.coach.setText("By "+bmi.coach.fullname);
-        if (bmi.heightEnglish) {
-            holder.height.setText(bmi.weight + "ft");
-        } else {
-            holder.height.setText(bmi.weight + "m");
-        }
-        if (bmi.weightEnglish) {
-            holder.height.setText(bmi.weight + "lbs");
-        } else {
-            holder.height.setText(bmi.weight + "kgs");
-        }
+        holder.coach.setText("By "+bmi.coach);
+//        if (bmi.heightEnglish) {
+//            holder.height.setText(bmi.weight + "ft");
+//        } else {
+//            holder.height.setText(bmi.weight + "m");
+//        }
+//        if (bmi.weightEnglish) {
+//            holder.height.setText(bmi.weight + "lbs");
+//        } else {
+//            holder.height.setText(bmi.weight + "kgs");
+//        }
 
     }
 
