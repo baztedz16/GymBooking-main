@@ -131,29 +131,33 @@ fab.setOnClickListener(new View.OnClickListener() {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Retrieve values from the dialog and use them as needed
-                String mealName = editTextmeal.getText().toString();
-                String description = editTextdescription.getText().toString();
-                int calories = Integer.parseInt(editTextCalories.getText().toString());
-                String mealTime = spinnerMealTime.getSelectedItem().toString();
-                String date = buttonPickDate.getText().toString();
-                String time = buttonPickTime.getText().toString();
-                // Do something with the values
-                String uuid = dbwrite.push().getKey();
-                dbwrite.child(uuid).setValue(new Diet(uuid,mealName,description,String.valueOf(calories),date,time,mealTime,userid
-                )).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                try {
+                    // Retrieve values from the dialog and use them as needed
+                    String mealName = editTextmeal.getText().toString();
+                    String description = editTextdescription.getText().toString();
+                    int calories = Integer.parseInt(editTextCalories.getText().toString());
+                    String mealTime = spinnerMealTime.getSelectedItem().toString();
+                    String date = buttonPickDate.getText().toString();
+                    String time = buttonPickTime.getText().toString();
+                    // Do something with the values
+                    String uuid = dbwrite.push().getKey();
+                    dbwrite.child(uuid).setValue(new Diet(uuid,mealName,description,String.valueOf(calories),date,time,mealTime,userid
+                    )).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("FIREBASE ERROR",""+ e.getMessage());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("FIREBASE ERROR",""+ e.getMessage());
 
-                    }
-                });
-                Toast.makeText(getActivity(), "Diet Added ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Toast.makeText(getActivity(), "Diet Added ", Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+                    Log.e("Error: ",e.getMessage());
+                }
             }
         });
 

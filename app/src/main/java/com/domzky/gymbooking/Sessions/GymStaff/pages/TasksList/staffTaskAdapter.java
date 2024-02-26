@@ -1,10 +1,6 @@
-package com.domzky.gymbooking.Sessions.GymCoach.pages.Dashboard.DashboardDesk.tabs.Session;
-
-import static android.content.Context.MODE_PRIVATE;
+package com.domzky.gymbooking.Sessions.GymStaff.pages.TasksList;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -14,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +24,6 @@ import com.domzky.gymbooking.Helpers.Things.CoachBooking;
 import com.domzky.gymbooking.Helpers.Things.Exercise;
 import com.domzky.gymbooking.Helpers.Things.ExerciseSesion;
 import com.domzky.gymbooking.R;
-import com.domzky.gymbooking.Sessions.GymCoach.pages.Exercises.AddExercise.AddExerciseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -41,51 +34,51 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
-public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessionListAdapter.ViewHolder> {
+public class staffTaskAdapter extends RecyclerView.Adapter<staffTaskAdapter.ViewHolder> {
 
     List<CoachBooking> list;
     List<Exercise> list2;
     private SharedPreferences preferences;
     private DatabaseReference dbwrite = new FirebaseHelper().getCoachBooking();
     private DatabaseReference dbwrite2 = new FirebaseHelper().getMemberSessionExcercise();
-    private DatabaseReference db = new FirebaseHelper().getExerciseReference();
-    private DatabaseReference dbSessionExercise = new FirebaseHelper().getMemberSessionExcercise();
-    private DatabaseReference dbSelectedExercise= new FirebaseHelper().getWorkoutReference();
     private SharedPreferences sharedPreferences;
-    public CoachesSessionListAdapter(List<CoachBooking> list, SharedPreferences sharedPreferences) {
+
+    private DatabaseReference dbSessionExercise = new FirebaseHelper().getMemberSessionExcercise();
+    private DatabaseReference db = new FirebaseHelper().getExerciseReference();
+    private DatabaseReference dbSelectedExercise= new FirebaseHelper().getWorkoutReference();
+    public staffTaskAdapter(List<CoachBooking> list, SharedPreferences sharedPreferences) {
         this.list = list;
         this.sharedPreferences = sharedPreferences;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public staffTaskAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.list_of_profiles_sessionitem,parent,false);
+        staffTaskAdapter.ViewHolder viewHolder = new staffTaskAdapter.ViewHolder(view);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String userid = sharedPreferences.getString("userid", "");
+        String userfullname = sharedPreferences.getString("fullname", "");
+
         CoachBooking coachBooking = list.get(position);
         list2 = new ArrayList<>();
+        holder.view.setVisibility(View.INVISIBLE);
+        //CoachBooking coachBooking = list.get(position);
+
         holder.fullname.setText("Member: "+coachBooking.userFullname);
         holder.dateTime.setText(coachBooking.date +" @ "+ coachBooking.time );
 
-//        holder.callBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new SIMHelper(v.getContext()).callNumber(coach.phone);
-//            }
-//        });
+
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +87,12 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
             }
         });
 
-
+        holder.approved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showConfirmationDialog(view.getContext(),coachBooking.uid);
+            }
+        });
 
     }
     // Method to show the selected date and time in a dialog
@@ -205,6 +203,43 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
         // Show the AlertDialog
         dialog.show();
     }
+    private void showConfirmationDialog(Context context,String gymsched) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirmation")
+                .setMessage("Are you sure want to confirm this Gym Schedule?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked Yes button
+                        // Implement your action here
+                        DatabaseReference nodeRef = dbwrite.child(gymsched);
+                        nodeRef.child("status").setValue(1, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@NonNull DatabaseError error, @NonNull DatabaseReference ref) {
+                                if (error == null) {
+                                    // Data updated successfully
+                                    Toast.makeText(context, gymsched+" Success", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Handle error
+                                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked No button
+                        // Implement your action here
+                    }
+                })
+                .setNeutralButton("Reject", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked Cancel button
+                        // Implement your action here
+                    }
+                })
+                .show();
+    }
     private void showSelectedActivity(String excerciseid,String excerciseName,Context context) {
         // Create an array of items for the list
         List<String> itemsList = new ArrayList<>();
@@ -242,7 +277,38 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
                 .setView(listView)
                 .setPositiveButton("Add Excercise", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        // Handle positive button click
+//                        db.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//                                list2.clear();
+//                                for ( DataSnapshot snap : snapshot.getChildren() ) {
+//                                    Log.i("",snap.child("exerciseid").getValue(String.class));
+////                                    if (
+////                                            snap.child("coach_id").getValue(String.class).equals(userid)
+////                                                    && !snap.child("deleted").getValue(Boolean.class)
+////                                    ) {
+////                                        Log.i("",snap.child("exerciseid").getValue(String.class));
+////
+////                                    }
+//                                    list2.add(new Exercise(
+//                                            snap.child("exerciseid").getValue(String.class),
+//                                            snap.child("coach_id").getValue(String.class),
+//                                            snap.child("name").getValue(String.class),
+//                                            snap.child("description").getValue(String.class),
+//                                            snap.child("deleted").getValue(Boolean.class)
+//                                    ));
+//                                }
+//
+//                                // Display the list in AlertDialog
+//                                showExerciseListDialog(list2,context,userid,userFullname);
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//                                Log.d("FIREBASE ERR", error.getMessage());
+//                            }
+//                        });
                     }
                 })
                 .setNegativeButton("Cancel Session", new DialogInterface.OnClickListener() {
@@ -282,9 +348,7 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
         // Show the AlertDialog
         dialog.show();
     }
-    private void showToast(String message, Context context) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
+
     private void showExerciseListDialog(List<Exercise> exerciseList,Context context,String userid,String userfullname) {
         // Create an AlertDialog.Builder
 
@@ -359,6 +423,64 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
         // Create and show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void showDialogWithDateTime(String userid,String coach,String coachName,String gym,String date, String time, Context context,String userfullname) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Selected Date and Time: " + date + " " + time)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Do something when the user clicks Yes, e.g., book the schedule
+                        bookSchedule(userid,coach,coachName,gym,date, time, context,userfullname);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Do something when the user clicks No, e.g., cancel the booking process
+                        dialog.dismiss(); // Close the dialog
+                    }
+                });
+        builder.create().show();
+    }
+    private void showToast(String message, Context context) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+    private void bookSchedule(String userid,String coach,String coachName,String gym,String date, String time, Context context,String userfullname) {
+        // Implement the booking logic here
+        // For example, you can send a network request to book the selected schedule
+        // After booking, you can show a success message or perform any other action
+
+        // For now, let's show a simple success message
+        AlertDialog.Builder successBuilder = new AlertDialog.Builder(context);
+        successBuilder.setMessage("Schedule booked successfully! "+coach+ " @ the Gym: "+gym)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Do something when the user clicks OK
+                        String uuid = dbwrite.push().getKey();
+                        dbwrite.child(uuid).setValue(new CoachBooking(
+                                coach,
+                                coachName,
+                                gym,
+                                time,
+                                date,
+                                userid,
+                                0,userfullname
+
+                        )).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("FIREBASE ERROR",""+ e.getMessage());
+
+                            }
+                        });
+                    }
+                });
+        successBuilder.create().show();
     }
     @Override
     public int getItemCount() {
