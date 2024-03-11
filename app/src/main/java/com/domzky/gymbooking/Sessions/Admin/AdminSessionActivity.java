@@ -24,6 +24,7 @@ import com.domzky.gymbooking.Sessions.Admin.pages.Account.AccountFragment;
 import com.domzky.gymbooking.Sessions.Admin.pages.Dashboard.DashboardFragment;
 import com.domzky.gymbooking.Sessions.Admin.pages.Reports.ReportsFragment;
 import com.domzky.gymbooking.Sessions.Admin.pages.GymsList.GymsListMenuFragment;
+import com.domzky.gymbooking.Sessions.Admin.pages.Videos.ViedosFragment;
 import com.domzky.gymbooking.Sessions.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -107,6 +108,9 @@ public class AdminSessionActivity extends AppCompatActivity implements Navigatio
         switch (item.getItemId()) {
             case R.id.admin_menu_dashboard:
                 changeFragmentMenu(new DashboardFragment(),item.toString());
+                break;
+            case R.id.admin_recommended_videos:
+                changeFragmentMenu(new ViedosFragment(),item.toString());
                 break;
             case R.id.admin_menu_reports:
                 changeFragmentMenu(new ReportsFragment(),item.toString());

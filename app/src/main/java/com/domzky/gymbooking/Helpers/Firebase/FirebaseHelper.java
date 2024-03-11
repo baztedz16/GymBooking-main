@@ -49,6 +49,9 @@ public class FirebaseHelper {
     public DatabaseReference getCoachBooking () {
         return ref.child("CoachBooking");
     }
+    public DatabaseReference getVideos () {
+        return ref.child("Videos");
+    }
     public DatabaseReference getMemberSessionExcercise () {
         return ref.child("MemberSessionExercise");
     }

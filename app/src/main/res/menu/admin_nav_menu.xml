@@ -6,6 +6,11 @@
             android:id="@+id/admin_menu_dashboard"
             android:icon="@drawable/ic_baseline_dashboard_24"
             android:title="Dashboard" />
+
+        <item
+            android:id="@+id/admin_recommended_videos"
+            android:icon="@drawable/ic_baseline_fitness_center_24"
+            android:title="Videos" />
         <item
             android:id="@+id/admin_menu_reports"
             android:icon="@drawable/ic_baseline_auto_graph_24"
