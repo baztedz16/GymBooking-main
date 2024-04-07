@@ -112,9 +112,9 @@ public class AdminSessionActivity extends AppCompatActivity implements Navigatio
             case R.id.admin_recommended_videos:
                 changeFragmentMenu(new ViedosFragment(),item.toString());
                 break;
-            case R.id.admin_menu_reports:
-                changeFragmentMenu(new ReportsFragment(),item.toString());
-                break;
+//            case R.id.admin_menu_reports:
+//                changeFragmentMenu(new ReportsFragment(),item.toString());
+//                break;
             case R.id.admin_menu_users:
                 changeFragmentMenu(new GymsListMenuFragment(),item.toString());
                 break;

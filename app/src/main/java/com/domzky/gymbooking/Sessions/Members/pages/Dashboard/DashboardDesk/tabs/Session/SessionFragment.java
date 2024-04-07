@@ -91,14 +91,15 @@ public class SessionFragment extends Fragment {
                                     getActivity().getSharedPreferences("member", MODE_PRIVATE).getString("fullname", "")
                             ));
                         }
+                        SharedPreferences sharedPrefs = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);
+
+                        recview.setAdapter(new CoachesSessionListAdapter(list,sharedPrefs));
+                        recview.setLayoutManager(new GridLayoutManager(getContext(),1));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
-                SharedPreferences sharedPrefs = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);
 
-                recview.setAdapter(new CoachesSessionListAdapter(list,sharedPrefs));
-                recview.setLayoutManager(new GridLayoutManager(getContext(),1));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

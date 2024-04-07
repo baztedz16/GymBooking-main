@@ -33,7 +33,7 @@ public class CoachesListFragment extends Fragment {
     private RecyclerView recview;
     private List<GymCoach> list;
 
-    private String gym_id;
+    private String gym_id,member;
     private DatabaseReference db = new FirebaseHelper().getUserReference("Coaches");
 
     @SuppressLint("MissingInflatedId")
@@ -46,7 +46,7 @@ public class CoachesListFragment extends Fragment {
         recview = view.findViewById(R.id.member_coaches_list_recview);
 
         gym_id = getActivity().getSharedPreferences("member", MODE_PRIVATE).getString("gym_id","");
-
+        member = getActivity().getSharedPreferences("member", MODE_PRIVATE).getString("member","");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -66,6 +66,8 @@ public class CoachesListFragment extends Fragment {
                                 snap.child("activated").getValue(Boolean.class),
                                 snap.child("gym_id").getValue(String.class)
                         ));
+
+
                     }
                 }
                 recview.setAdapter(new CoachesListAdapter(list));

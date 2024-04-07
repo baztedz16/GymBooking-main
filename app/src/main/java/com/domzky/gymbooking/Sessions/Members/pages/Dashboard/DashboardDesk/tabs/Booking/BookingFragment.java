@@ -33,7 +33,7 @@ public class BookingFragment extends Fragment {
     private ViewGroup viewGroup;
     private RecyclerView recview;
     private List<GymCoach> list;
-    private String gym_id;
+    private String gym_id,member;
     private DatabaseReference db = new FirebaseHelper().getUserReference("Coaches");
 
     @Override
@@ -46,26 +46,46 @@ public class BookingFragment extends Fragment {
 
         gym_id = getActivity().getSharedPreferences("member", MODE_PRIVATE).getString("gym_id","");
 
+        member = getActivity().getSharedPreferences("member", MODE_PRIVATE).getString("member_type","");
 
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 for (DataSnapshot snap: snapshot.getChildren()) {
+                    Log.i("Member Type",member);
                     if (
                             snap.child("activated").getValue(Boolean.class) &&
                                     snap.child("gym_id").getValue(String.class).equals(gym_id)
                     ) {
-                        list.add(new GymCoach(
-                                snap.getKey(),
-                                snap.child("fullname").getValue(String.class),
-                                snap.child("email").getValue(String.class),
-                                snap.child("phone").getValue(String.class),
-                                snap.child("username").getValue(String.class),
-                                snap.child("password").getValue(String.class),
-                                snap.child("activated").getValue(Boolean.class),
-                                snap.child("gym_id").getValue(String.class)
-                        ));
+                        if(member.equals("Member")){
+                            if(!snap.child("fullname").getValue(String.class).equals("gym schedule")){
+                                list.add(new GymCoach(
+                                        snap.getKey(),
+                                        snap.child("fullname").getValue(String.class),
+                                        snap.child("email").getValue(String.class),
+                                        snap.child("phone").getValue(String.class),
+                                        snap.child("username").getValue(String.class),
+                                        snap.child("password").getValue(String.class),
+                                        snap.child("activated").getValue(Boolean.class),
+                                        snap.child("gym_id").getValue(String.class)
+                                ));
+                            }
+
+                        }else{
+                            if(snap.child("fullname").getValue(String.class).equals("gym schedule")){
+                                list.add(new GymCoach(
+                                        snap.getKey(),
+                                        snap.child("fullname").getValue(String.class),
+                                        snap.child("email").getValue(String.class),
+                                        snap.child("phone").getValue(String.class),
+                                        snap.child("username").getValue(String.class),
+                                        snap.child("password").getValue(String.class),
+                                        snap.child("activated").getValue(Boolean.class),
+                                        snap.child("gym_id").getValue(String.class)
+                                ));
+                            }
+                        }
                     }
                 }
                 SharedPreferences sharedPrefs = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);

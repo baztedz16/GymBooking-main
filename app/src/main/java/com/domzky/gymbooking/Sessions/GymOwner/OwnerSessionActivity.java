@@ -20,6 +20,7 @@ import com.domzky.gymbooking.R;
 import com.domzky.gymbooking.Sessions.GymOwner.pages.Account.AccountFragment;
 import com.domzky.gymbooking.Sessions.GymOwner.pages.CoachesList.CoachesListFragment;
 import com.domzky.gymbooking.Sessions.GymOwner.pages.Dashboard.DashboardFragment;
+import com.domzky.gymbooking.Sessions.GymOwner.pages.MemberList.MembersListFragment;
 import com.domzky.gymbooking.Sessions.GymOwner.pages.Membership.MembershipListFragment;
 import com.domzky.gymbooking.Sessions.GymOwner.pages.StaffsList.StaffsListFragment;
 import com.domzky.gymbooking.Sessions.GymOwner.pages.TasksList.TasksListFragment;
@@ -123,6 +124,9 @@ public class OwnerSessionActivity extends AppCompatActivity implements Navigatio
                 break;
             case R.id.owner_menu_logout:
                 logOutSessionFunction();
+                break;
+            case R.id.owner_member:
+                changeFragmentMenu(new MembersListFragment(),item.toString());
                 break;
             default:
                 changeFragmentMenu(new DashboardFragment(),item.toString());
