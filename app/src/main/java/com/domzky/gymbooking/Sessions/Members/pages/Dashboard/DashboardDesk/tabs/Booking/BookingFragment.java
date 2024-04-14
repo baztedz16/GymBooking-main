@@ -59,7 +59,7 @@ public class BookingFragment extends Fragment {
                                     snap.child("gym_id").getValue(String.class).equals(gym_id)
                     ) {
                         if(member.equals("Member")){
-                            if(!snap.child("fullname").getValue(String.class).equals("gym schedule")){
+                            if(!snap.child("fullname").getValue(String.class).contains("gym")){
                                 list.add(new GymCoach(
                                         snap.getKey(),
                                         snap.child("fullname").getValue(String.class),
@@ -73,7 +73,7 @@ public class BookingFragment extends Fragment {
                             }
 
                         }else{
-                            if(snap.child("fullname").getValue(String.class).equals("gym schedule")){
+                            if(snap.child("fullname").getValue(String.class).contains("gym")){
                                 list.add(new GymCoach(
                                         snap.getKey(),
                                         snap.child("fullname").getValue(String.class),

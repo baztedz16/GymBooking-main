@@ -20,8 +20,10 @@ public class ProgramsViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new BMIFragment();
+                return new ExercisesFragment();
             case 1:
+                return new BMIFragment();
+            case 2:
                 return new DietFragment();
             default:
                 return new BMIFragment();

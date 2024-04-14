@@ -3,11 +3,14 @@ package com.domzky.gymbooking.Sessions.Admin.pages.Videos;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -28,12 +31,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ViedosFragment extends Fragment {
     private DatabaseReference dbWriteVideo = new FirebaseHelper().getVideos();
@@ -74,7 +80,11 @@ public class ViedosFragment extends Fragment {
                     linkItems.add(new LinkItem(
                             snap.child("title").getValue(String.class),
                             snap.child("link").getValue(String.class),
-                            snap.child("thumbnail").getValue(String.class)
+                            snap.child("thumbnail").getValue(String.class),
+                            snap.child("focusarea").getValue(String.class),
+                            snap.child("equipment").getValue(String.class),
+                            snap.child("preparation").getValue(String.class),
+                            snap.child("execution").getValue(String.class)
                     ));
                 }
                 adapter.notifyDataSetChanged();
@@ -107,9 +117,12 @@ public class ViedosFragment extends Fragment {
                 String title = jsonObject.getString("title");
                 String videoUrl = jsonObject.getString("video");
                 String thumbnail = jsonObject.getString("thumbnail");
-
+                String focusarea = jsonObject.getString("focusarea");
+                String equipment = jsonObject.getString("equipment");
+                String preparation = jsonObject.getString("preparation");
+                String execution = jsonObject.getString("execution");
                 // Extract image URL from video URL (for simplicity, assuming it's available in the JSON)
-                linkItems.add(new LinkItem(title,videoUrl, thumbnail));
+                linkItems.add(new LinkItem(title,videoUrl,thumbnail,focusarea,equipment,preparation, execution));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,7 +137,17 @@ public class ViedosFragment extends Fragment {
         // You can use a library like YouTube API to fetch thumbnail URLs if needed.
         return "Image URL";
     }
+    public static String extractVideoId(String youtubeUrl) {
+        String videoId = null;
+        Pattern pattern = Pattern.compile("(?<=v=)[a-zA-Z0-9_-]+");
+        Matcher matcher = pattern.matcher(youtubeUrl);
 
+        if (matcher.find()) {
+            videoId = matcher.group();
+        }
+
+        return videoId;
+    }
     private void showAddVideoDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -132,8 +155,29 @@ public class ViedosFragment extends Fragment {
 
         EditText editTextTitle = dialogView.findViewById(R.id.editTextTitle);
         EditText editTextLink = dialogView.findViewById(R.id.editTextLink);
+        EditText focusArea = dialogView.findViewById(R.id.focusArea);
+        EditText equipmentTF = dialogView.findViewById(R.id.equipement);
+        EditText preparationTF = dialogView.findViewById(R.id.Preparation);
+        EditText ExecutionTF = dialogView.findViewById(R.id.Execution);
         EditText editTextThumbnail = dialogView.findViewById(R.id.editTextThumbnail);
+        ImageView previewImage = dialogView.findViewById(R.id.preview);
+        editTextLink.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                editTextThumbnail.setText(extractVideoId(editTextLink.getText().toString()));
+                Picasso.get().load("https://img.youtube.com/vi/"+editTextThumbnail.getText().toString().trim()+"/default.jpg").into(previewImage);
+            }
+        });
         builder.setView(dialogView)
                 .setTitle("Add Video")
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -142,9 +186,12 @@ public class ViedosFragment extends Fragment {
                         String title = editTextTitle.getText().toString().trim();
                         String link = editTextLink.getText().toString().trim();
                         String thumbnail = "https://img.youtube.com/vi/"+editTextThumbnail.getText().toString().trim()+"/default.jpg";
-
+                        String focusarea = focusArea.getText().toString().trim();
+                        String equipment = equipmentTF.getText().toString().trim();
+                        String preparation = preparationTF.getText().toString().trim();
+                        String execution = ExecutionTF.getText().toString().trim();
                         // Add the new video to your list
-                        linkItems.add(new LinkItem(title, link, thumbnail));
+                        linkItems.add(new LinkItem(title,link,thumbnail,focusarea,equipment,preparation, execution));
 
                         AlertDialog.Builder successBuilder = new AlertDialog.Builder(getContext());
                         successBuilder.setMessage("Video add successfully! "+title+ "")

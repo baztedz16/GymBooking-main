@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.domzky.gymbooking.R;
@@ -38,17 +39,24 @@ public class CustomListAdapter extends ArrayAdapter<LinkItem> {
 
         ImageView imagePreview = convertView.findViewById(R.id.imagePreview);
         TextView titleTextView = convertView.findViewById(R.id.titleTextView);
+        RelativeLayout rl = convertView.findViewById(R.id.listBtn);
 
         // Load image preview using Picasso library
-        Picasso.get().load(currentItem.getImageUrl()).into(imagePreview);
+        Picasso.get().load(currentItem.getVideoUrl()).into(imagePreview);
 
         titleTextView.setText(currentItem.getTitle());
 
+        rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         imagePreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Open the URL when imagePreview is clicked
-                String url = currentItem.getvideoUrl(); // Replace this with the actual URL you want to open
+                String url = currentItem.getVideoUrl(); // Replace this with the actual URL you want to open
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 mContext.startActivity(intent);
             }

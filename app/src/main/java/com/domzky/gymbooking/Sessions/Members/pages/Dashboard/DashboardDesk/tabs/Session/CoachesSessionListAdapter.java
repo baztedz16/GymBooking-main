@@ -47,6 +47,7 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
 
     List<CoachBooking> list;
     List<Exercise> list2;
+
     private SharedPreferences preferences;
     private DatabaseReference dbwrite = new FirebaseHelper().getCoachBooking();
     private DatabaseReference dbwrite2 = new FirebaseHelper().getMemberSessionExcercise();
@@ -80,7 +81,7 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
 
         //CoachBooking coachBooking = list.get(position);
 
-        holder.fullname.setText("Coach: "+coachBooking.coachName);
+        holder.fullname.setText("Coach: "+coachBooking.coachName+" "+coachBooking.coach) ;
         holder.dateTime.setText(coachBooking.date +" @ "+ coachBooking.time );
 
 //        holder.callBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,13 +152,19 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
         dbSessionExercise.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                itemsList.clear();
-                itemsListID.clear();
-                for ( DataSnapshot snap : snapshot.getChildren() ) {
-                    Log.i("",snap.child("excerciseName").getValue(String.class));
-                    itemsList.add(snap.child("excerciseName").getValue(String.class));
-                    itemsListID.add(snap.child("exerciseid").getValue(String.class));
-                }
+               try {
+                   itemsList.clear();
+                   itemsListID.clear();
+                   for ( DataSnapshot snap : snapshot.getChildren() ) {
+                       if (coachName.equals(snap.child("coach_id").getValue(String.class)) ){
+                           Log.i("",snap.child("excerciseName").getValue(String.class));
+                           itemsList.add(snap.child("excerciseName").getValue(String.class));
+                           itemsListID.add(snap.child("exerciseid").getValue(String.class));
+                       }
+                   }
+               }catch (Exception e){
+                   System.out.println(e);
+               }
             }
 
             @Override
@@ -195,7 +202,7 @@ public class CoachesSessionListAdapter extends RecyclerView.Adapter<CoachesSessi
 //                                    }
                                     list2.add(new Exercise(
                                             snap.child("exerciseid").getValue(String.class),
-                                            snap.child("coach_id").getValue(String.class),
+                                            coachName,
                                             snap.child("name").getValue(String.class),
                                             snap.child("description").getValue(String.class),
                                             snap.child("deleted").getValue(Boolean.class)

@@ -37,6 +37,10 @@ public class FirebaseHelper {
     public DatabaseReference getExerciseReference () {
         return ref.child("Exercises");
     }
+
+    public DatabaseReference getWorkOutLogs () {
+        return ref.child("WorkoutLogs");
+    }
     public DatabaseReference getWorkoutReference () {
         return ref.child("Workout");
     }
