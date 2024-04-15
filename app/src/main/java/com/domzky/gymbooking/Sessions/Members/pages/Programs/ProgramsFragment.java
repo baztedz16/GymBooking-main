@@ -33,7 +33,7 @@ public class ProgramsFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                Log.i("Selected","Errors");
+                Log.i("Selected",String.valueOf(tab.getPosition()));
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {}

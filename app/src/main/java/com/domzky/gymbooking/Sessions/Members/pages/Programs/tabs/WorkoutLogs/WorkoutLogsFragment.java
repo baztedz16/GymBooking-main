@@ -1,27 +1,30 @@
-package com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.Exercises;
+package com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.WorkoutLogs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.domzky.gymbooking.Helpers.Firebase.FirebaseHelper;
-import com.domzky.gymbooking.Helpers.Things.Exercise;
+import com.domzky.gymbooking.Helpers.Things.ExerciseLogSesion;
 import com.domzky.gymbooking.Helpers.Things.Schedules;
-import com.domzky.gymbooking.Helpers.Users.GymCoach;
 import com.domzky.gymbooking.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -30,11 +33,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ExercisesFragment extends Fragment {
+public class WorkoutLogsFragment extends Fragment {
 
     private RecyclerView recview;
-    private List<Schedules> list;
-    private DatabaseReference db = new FirebaseHelper().getRootReference();
+    private List<ExerciseLogSesion> list;
+    private DatabaseReference db = new FirebaseHelper().getExcerciseLogs();
     private FloatingActionButton fab;
 
     @SuppressLint("MissingInflatedId")
@@ -66,14 +69,19 @@ public class ExercisesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 list.clear();
+                SharedPreferences sharedPrefs = getContext().getSharedPreferences("member", getContext().MODE_PRIVATE);
+                String userid = sharedPrefs.getString("userid", "");
 
-                for (DataSnapshot snap : snapshot.child("Schedules").getChildren()) {
-                    list.add(new Schedules(
-                            snap.child("id").getValue(Integer.class),
-                            snap.child("name").getValue(String.class)
-                    ));
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Log.i("asd",snap.toString());
+                    if(snap.getKey().contains(userid)){
+                        list.add(new ExerciseLogSesion(
+                                snap.getKey().replace(userid,"")
+                        ));
+                    }
+
                 }
-                recview.setAdapter(new ExercisesAdapter(list));
+                recview.setAdapter(new WorkoutLogsAdapter(list));
                 recview.setLayoutManager(new LinearLayoutManager(getContext()));
             }
             @Override

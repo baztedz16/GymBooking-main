@@ -1,0 +1,55 @@
+<!-- coach_custom_exercise_items.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Exercise ID -->
+    <TextView
+        android:id="@+id/textViewExerciseId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp" />
+
+    <!-- Exercise Description -->
+    <TextView
+        android:id="@+id/textViewExerciseDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp" />
+
+    <!-- Current Sets -->
+    <TextView
+        android:id="@+id/textViewCurrentSets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp" />
+
+    <!-- Set Reps -->
+    <TextView
+        android:id="@+id/textViewSetReps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp" />
+
+    <!-- Actual Reps (Editable) -->
+    <EditText
+        android:id="@+id/editTextActualReps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Actual Reps"
+        android:padding="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp" />
+</LinearLayout>

@@ -7,6 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.BMI.BMIFragment;
 import com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.Diet.DietFragment;
 import com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.Exercises.ExercisesFragment;
+import com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.WorkoutLogs.WorkoutLogsFragment;
+
 import org.jetbrains.annotations.NotNull;
 
 public class ProgramsViewPagerAdapter extends FragmentStateAdapter {
@@ -25,13 +27,15 @@ public class ProgramsViewPagerAdapter extends FragmentStateAdapter {
                 return new BMIFragment();
             case 2:
                 return new DietFragment();
+            case 3:
+                return new WorkoutLogsFragment();
             default:
-                return new BMIFragment();
+                return new WorkoutLogsFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 4;
     }
 }

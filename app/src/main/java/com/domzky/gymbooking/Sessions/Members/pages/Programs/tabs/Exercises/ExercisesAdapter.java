@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.domzky.gymbooking.Helpers.FieldSyntaxes.MoneyTextWatcher;
 import com.domzky.gymbooking.Helpers.Firebase.FirebaseHelper;
 import com.domzky.gymbooking.Helpers.Things.Exercise;
+import com.domzky.gymbooking.Helpers.Things.ExerciseLogSesion;
 import com.domzky.gymbooking.Helpers.Things.ExerciseSesion;
 import com.domzky.gymbooking.Helpers.Things.Schedules;
 import com.domzky.gymbooking.Helpers.Things.Workout;
@@ -29,11 +30,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.ViewHolder>{
-
+    private boolean isAlertDialogShown = false; // Flag to track if the AlertDialog has been shown
+    private boolean isAlertDialogShown2 = false; // Flag to track if the AlertDialog has been shown
     public List<Schedules> list;
     List<Workout> list2;
     List<Exercise> list3;
@@ -41,6 +47,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
 
     private DatabaseReference dbread = new FirebaseHelper().getMemberExerciseReference();
     private DatabaseReference dbwrite = new FirebaseHelper().getMemberExerciseReference();
+    private DatabaseReference dbwriteExcerciseLogs = new FirebaseHelper().getExcerciseLogs();
     private DatabaseReference db = new FirebaseHelper().getWorkOutLogs();
     private DatabaseReference dbExercise = new FirebaseHelper().getExerciseReference();
     public ExercisesAdapter(List<Schedules> list) {
@@ -64,6 +71,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
            dayClick.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
+                   isAlertDialogShown2 = false;
                    db.addValueEventListener(new ValueEventListener() {
                        @Override
                        public void onDataChange(@NonNull @com.google.firebase.database.annotations.NotNull DataSnapshot snapshot) {
@@ -92,7 +100,11 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
                            SharedPreferences sharedPrefs = v.getContext().getSharedPreferences("member", v.getContext().MODE_PRIVATE);
                            String userid = sharedPrefs.getString("userid", "");
                            // Display the list in AlertDialog
-                           showWorkOutListDialog(list2, v.getContext(),userid,name.getText().toString());
+                           if (!isAlertDialogShown2) {
+                               showWorkOutListDialog(list2, v.getContext(),userid,name.getText().toString());
+                               isAlertDialogShown2 = true; // Set the flag to true after showing the AlertDialog
+                           }
+
                        }
 
                        @Override
@@ -219,6 +231,7 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
 
 
         });
+
 // Add the "Add Exercise" button
         builder.setPositiveButton("Add Exercise", new DialogInterface.OnClickListener() {
             @Override
@@ -246,7 +259,10 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
                         }
 
                         // Display the list in AlertDialog
-                        showExerciseListDialog(list3,context,userid,day);
+                        if (!isAlertDialogShown) {
+                            showExerciseListDialog(list3, context, userid, day);
+                            isAlertDialogShown = true; // Set the flag to true after showing the AlertDialog
+                        }
                     }
 
                     @Override
@@ -257,6 +273,55 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
                 // Add code here to handle adding an exercise
             }
         });
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+        SimpleDateFormat dateFormatsa =  new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String dayOfWeek = dateFormat.format(calendar.getTime());
+
+        if(dayOfWeek.equals(day)){
+            builder.setNeutralButton("Start Now", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+
+                    //ExerciseLogSesion exerciseLogSesion = exerciseList.get(position);
+                    SharedPreferences sharedPrefs = context.getSharedPreferences("member", context.MODE_PRIVATE);
+                    String userid = sharedPrefs.getString("userid", "");
+
+
+                    String SchedID = dateFormatsa.format(new Date()) +""+ userid;
+                    for (int i = 0; i < list2.size(); i++){
+                        String uuid = dbwriteExcerciseLogs.push().getKey();
+                        Log.i("data: ",String.valueOf(i));
+                        dbwriteExcerciseLogs.child(SchedID).child(uuid).setValue(new ExerciseLogSesion(
+                                userid,
+                                list2.get(i).uuid,
+                                list2.get(i).workoutName,
+                                day,
+                                dateFormatsa.format(new Date())
+                        ));
+
+                        for (int ii = 0; ii < Integer.parseInt(list2.get(i).sets); ii++){
+                           try{
+                               String uuid2 = dbwriteExcerciseLogs.push().getKey();
+                               Log.i("data: ",String.valueOf(ii));
+                               dbwriteExcerciseLogs.child(SchedID).child(uuid).child("Activity").child(uuid2).setValue(new ExerciseLogSesion(
+                                       list2.get(i).workoutName,
+                                       String.valueOf(ii),
+                                       list2.get(i).reps,
+                                       "0"
+                               ));
+                           }catch (Exception e){
+
+                           }
+                        }
+                    }
+
+                }
+            });
+
+        }
         // Create and show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();

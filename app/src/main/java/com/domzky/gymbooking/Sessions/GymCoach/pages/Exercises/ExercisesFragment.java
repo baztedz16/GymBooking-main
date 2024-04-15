@@ -89,7 +89,7 @@ public class ExercisesFragment extends Fragment {
         });
 
 //
-//        recview.setAdapter(new ExercisesAdapter(list));
+//        recview.setAdapter(new WorkoutLogsAdapter(list));
 //        recview.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
