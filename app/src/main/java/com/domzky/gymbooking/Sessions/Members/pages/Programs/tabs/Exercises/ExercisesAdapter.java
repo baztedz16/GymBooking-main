@@ -1,5 +1,7 @@
 package com.domzky.gymbooking.Sessions.Members.pages.Programs.tabs.Exercises;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,7 +25,9 @@ import com.domzky.gymbooking.Helpers.Things.Workout;
 import com.domzky.gymbooking.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -220,6 +224,30 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
                                 //Toast.makeText(getBaseContext(),"Exercise Adding Failed. Please Try Again",Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                    }
+                });
+                dialogBuilder.setNeutralButton("Delete This Exercise", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String reps = repsEditText.getText().toString();
+                        String sets = setsEditText.getText().toString();
+                        db.child(workout.uuid).removeValue()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Snackbar.make(view, "Data deleted successfully", Snackbar.LENGTH_SHORT).show();
+                                        // Data successfully deleted
+                                        Log.d(TAG, "Data deleted successfully");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // Failed to delete data
+                                        Log.w(TAG, "Error deleting data", e);
+                                    }
+                                });
 
                     }
                 });

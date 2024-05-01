@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -54,6 +57,7 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
     private DatabaseReference dbwrite = new FirebaseHelper().getMemberExerciseReference();
     private DatabaseReference db = new FirebaseHelper().getWorkOutLogs();
     private DatabaseReference dbExercise = new FirebaseHelper().getExcerciseLogs();
+    private DatabaseReference dbwriteExcerciseLogs = new FirebaseHelper().getExcerciseLogs();
     public WorkoutLogsAdapter(List<ExerciseLogSesion> list) {
         this.list = list;
     }
@@ -192,7 +196,7 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
                                     ));
                                 }
                                 if (!isAlertDialogShown1) {
-                                    showActualLogs(list4,context,userid,day);
+                                    showActualLogs(list4,context,exerciseLogSesion.uuid.toString(),day);
                                     isAlertDialogShown1 = true; // Set the flag to true after showing the AlertDialog
                                 }
                                 // Display the list in AlertDialog
@@ -254,6 +258,8 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
                 TextView textViewCurrentSets = convertView.findViewById(R.id.textViewCurrentSets);
                 TextView textViewSetReps = convertView.findViewById(R.id.textViewSetReps);
                 EditText editTextActualReps = convertView.findViewById(R.id.editTextActualReps);
+                Button minus = convertView.findViewById(R.id.minusbtn);
+                Button plus = convertView.findViewById(R.id.plusbtn);
 
                 ExerciseLogSesion exerciseLogSesion = exerciseList.get(position);
                 textViewExerciseId.setText("ID: " + exerciseLogSesion.excerciseActivity);
@@ -266,6 +272,57 @@ public class WorkoutLogsAdapter extends RecyclerView.Adapter<WorkoutLogsAdapter.
                 // Set initial text for the editable field
                 editTextActualReps.setText(String.valueOf(exerciseLogSesion.actualrep));
 
+                int reptint = Integer.parseInt(exerciseLogSesion.rept);
+                int actualreptint = Integer.parseInt(exerciseLogSesion.actualrep);
+                plus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(actualreptint <= reptint){
+                            dbwriteExcerciseLogs.child(day).child(userid).child("Activity").child(exerciseLogSesion.excerciseActivity).setValue(new ExerciseLogSesion(
+                                exerciseLogSesion.excerciseName,
+                                exerciseLogSesion.sets,
+                                exerciseLogSesion.rept,
+                                    String.valueOf(Integer.valueOf(editTextActualReps.getText().toString())+1)
+                        ));
+                            editTextActualReps.setText( String.valueOf(Integer.valueOf(editTextActualReps.getText().toString())+1));
+                        }
+                    }
+                });
+                minus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(actualreptint >=1){
+                            dbwriteExcerciseLogs.child(day).child(userid).child("Activity").child(exerciseLogSesion.excerciseActivity).setValue(new ExerciseLogSesion(
+                                    exerciseLogSesion.excerciseName,
+                                    exerciseLogSesion.sets,
+                                    exerciseLogSesion.rept,
+                                    String.valueOf(Integer.valueOf(editTextActualReps.getText().toString())-1)
+                            ));
+                            editTextActualReps.setText( String.valueOf(Integer.valueOf(editTextActualReps.getText().toString())-1));
+                        }
+                    }
+                });
+                editTextActualReps.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        dbwriteExcerciseLogs.child(day).child(userid).child("Activity").child(exerciseLogSesion.excerciseActivity).setValue(new ExerciseLogSesion(
+//                                exerciseLogSesion.excerciseName,
+//                                exerciseLogSesion.sets,
+//                                exerciseLogSesion.rept,
+//                                editTextActualReps.getText().toString()
+//                        ));
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
                 // Disable editing for non-editable fields
                 textViewCurrentSets.setEnabled(false);
                 textViewSetReps.setEnabled(false);
